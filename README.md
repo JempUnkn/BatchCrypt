@@ -63,5 +63,8 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICE
 
 ## Agradecimentos
 
-- **Inspiração**: Ferramentas de ofuscação de código open-source.
+- **Minhas necessidades**: Eu precisava de obfuscador para um projeto que usa Bacthfile e sem sucesso ao procurar na Net.
 - **Tecnologias Usadas**: HTML, JavaScript, CSS.
+
+## LINK
+- [BatchCrypt.io](https://jempunkn.github.io/BatchCrypt)
