@@ -72,9 +72,9 @@ Para contornar essas limitações, recomenda-se o seguinte processo:
 
    Substitua `'https://raw.githubusercontent.com/SeuUsuario/SeuRepositorio/main/seu_arquivo.bat'` pela URL do seu arquivo RAW.
 
-3. **Ofuscar e proteger seu script**: Após fazer upload do arquivo em um repositório, basta usar o nosso **Obfuscador** para tornar o script mais difícil de ser lido ou modificado. A ofuscação ajuda a esconder as lógicas internas do seu BatchFile e dificulta a compreensão do código por terceiros.
+3. **Versão Melhorada**: Após fazer upload do arquivo em um repositório, basta criar um arquivo seguindo o exemplo abaixo.
 
-   Um exemplo de como o código final pode se parecer:
+   Um exemplo de como o código melhorado pode se parecer:
 
    ```batch
    @echo off
