@@ -44,10 +44,44 @@
     %GzNlPOdM%
     ```
 
+
 ## Requisitos
 
 - **Navegador**: Funciona em qualquer navegador moderno (Chrome, Firefox, Edge, etc.).
 - **Sem Dependências**: Não requer instalação de software adicional.
+
+## Limitações da Versão Atual
+
+A versão atual do obfuscador não é compatível com scripts de Batch mais complexos, como aqueles que utilizam estruturas como `if`, `else` e `for`. Esses comandos podem não funcionar corretamente após a ofuscação, já que a ferramenta foi desenvolvida para lidar apenas com comandos mais simples de Batch.
+
+### O que fazer?
+
+Para contornar essas limitações, recomenda-se o seguinte processo:
+
+1. **Hospedar seu arquivo em um local seguro**: Faça o upload do seu script Batch em um repositório ou servidor seguro. Certifique-se de que o arquivo permaneça acessível via URL RAW. Um exemplo de URL seria:
+
+   ```
+   https://raw.githubusercontent.com/SeuUsuario/SeuRepositorio/main/seu_arquivo.bat
+   ```
+
+2. **Baixar e executar o arquivo diretamente**: Use o PowerShell para baixar e executar o arquivo de forma temporária. Isso pode ser feito com o seguinte comando:
+
+   ```powershell
+   powershell -Command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/SeuUsuario/SeuRepositorio/main/seu_arquivo.bat' -OutFile \"$env:TEMP\\seu_arquivo.bat\"; cmd /c \"$env:TEMP\\seu_arquivo.bat\"; Remove-Item \"$env:TEMP\\seu_arquivo.bat\""
+   ```
+
+   Substitua `'https://raw.githubusercontent.com/SeuUsuario/SeuRepositorio/main/seu_arquivo.bat'` pela URL do seu arquivo RAW.
+
+3. **Ofuscar e proteger seu script**: Após fazer upload do arquivo em um repositório, basta usar o nosso **Obfuscador** para tornar o script mais difícil de ser lido ou modificado. A ofuscação ajuda a esconder as lógicas internas do seu BatchFile e dificulta a compreensão do código por terceiros.
+
+   Um exemplo de como o código final pode se parecer:
+
+   ```batch
+   @echo off
+   powershell -Command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/SeuUsuario/SeuRepositorio/main/seu_arquivo.bat' -OutFile \"$env:TEMP\\seu_arquivo.bat\"; cmd /c \"$env:TEMP\\seu_arquivo.bat\"; Remove-Item \"$env:TEMP\\seu_arquivo.bat\""
+   ```
+
+4. **Upload no Obfuscador**: Para dar o próximo passo, você pode usar o nosso **Obfuscador** [aqui](#link). Basta fazer o upload do arquivo e seguir as instruções para gerar a versão ofuscada e segura do seu script.
 
 ## Como Contribuir
 
