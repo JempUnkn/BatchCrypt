@@ -198,7 +198,7 @@
             obfuscatedScriptContent = obfuscated;
             updateProgress(100);
             log.textContent = "Ofuscação concluída. Escolha um nome para o arquivo.";
-            fileNameInput.value = `${fileInput.files[0].name}_ofuscado.bat`;
+            fileNameInput.value = `Ofuscado_${fileInput.files[0].name}`;
             downloadBtn.disabled = false;
         }
 
