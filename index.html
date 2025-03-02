@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CYJECT - Obfuscador de Scripts Batch</title>
+    <title>BatchCrypt - Obfuscador de Scripts Batch</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -69,133 +69,193 @@
         button:disabled {
             background-color: #ccc;
         }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .popup {
+            position: fixed;
+            top: 10px; /* Distância do topo da tela */
+            left: 50%;
+            transform: translateX(-50%); /* Centraliza o popup horizontalmente */
+            background-color: red; /* Cor de fundo vermelho */
+            color: white;
+            padding: 10px 20px; /* Espaçamento interno */
+            border-radius: 5px; /* Bordas arredondadas */
+            display: flex;
+            justify-content: center; /* Centraliza o texto */
+            align-items: center; /* Alinha verticalmente o conteúdo */
+            z-index: 9999; /* Fica na frente de todos os outros elementos */
+            min-width: 200px; /* Largura mínima para o popup */
+            flex-wrap: wrap;
+        }
+
+        #popup-text {
+            font-size: 14px; /* Tamanho da fonte reduzido */
+            text-align: center; /* Centraliza o texto */
+        }
+
+        .countdown-bar {
+            width: 100%;
+            height: 5px;
+            background-color: #fff;
+            position: relative;
+            margin-top: 5px;
+        }
+
+        .countdown-bar div {
+            height: 100%;
+            background-color: rgb(167, 9, 0);
+            width: 100%;
+            transition: width 6s linear; /* Ajusta o tempo do countdown para 6 segundos */
+        }
     </style>
 </head>
 <body>
+    <div class="popup">
+        <div id="popup-text">Esta versão não suporta todas as versões de BatchFile. Mais info. <a style="color: yellow;text-decoration: underline;" href="https://github.com/jempunkn/BatchCrypt#limita%C3%A7%C3%B5es-da-vers%C3%A3o-atual">aqui!</a></div> 
+        <div class="countdown-bar"><div></div></div>
+    </div>
+    <div class="container">
+        <h1>BatchCrypt - Obfuscador de Scripts Batch</h1>
+        <p>Faça upload do seu arquivo de script Batch e clique em Ofuscar.</p>
+        
+        <input type="file" id="fileInput">
+        <button id="startBtn" onclick="startObfuscation()" disabled>Ofuscar Script</button>
 
-<div class="container">
-    <h1>CYJECT - Obfuscador de Scripts Batch</h1>
-    <p>Faça upload do seu arquivo de script Batch e clique em Ofuscar.</p>
-    
-    <input type="file" id="fileInput">
-    <button id="startBtn" onclick="startObfuscation()" disabled>Ofuscar Script</button>
+        <div class="progress-bar" id="progressBar">
+            <div id="progress"></div>
+        </div>
 
-    <div class="progress-bar" id="progressBar">
-        <div id="progress"></div>
+        <div id="log"></div>
+
+        <input type="text" id="fileName" placeholder="Digite o nome do arquivo...">
+        <button id="downloadBtn" onclick="downloadFile()" disabled>Download</button>
     </div>
 
-    <div id="log"></div>
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const startBtn = document.getElementById('startBtn');
+        const progressBar = document.getElementById('progressBar');
+        const progress = document.getElementById('progress');
+        const log = document.getElementById('log');
+        const fileNameInput = document.getElementById('fileName');
+        const downloadBtn = document.getElementById('downloadBtn');
 
-    <input type="text" id="fileName" placeholder="Digite o nome do arquivo...">
-    <button id="downloadBtn" onclick="downloadFile()" disabled>Download</button>
-</div>
+        let originalScriptContent = '';
+        let obfuscatedScriptContent = '';
+        let fileName = '';
 
-<script>
-    const fileInput = document.getElementById('fileInput');
-    const startBtn = document.getElementById('startBtn');
-    const progressBar = document.getElementById('progressBar');
-    const progress = document.getElementById('progress');
-    const log = document.getElementById('log');
-    const fileNameInput = document.getElementById('fileName');
-    const downloadBtn = document.getElementById('downloadBtn');
+        fileInput.addEventListener('change', handleFileUpload);
 
-    let originalScriptContent = '';
-    let obfuscatedScriptContent = '';
-    let fileName = '';
-
-    fileInput.addEventListener('change', handleFileUpload);
-
-    function handleFileUpload() {
-        if (fileInput.files.length > 0) {
-            startBtn.disabled = false;
-            log.textContent = "Arquivo carregado. Pronto para ofuscar!";
-        } else {
-            startBtn.disabled = true;
+        function handleFileUpload() {
+            if (fileInput.files.length > 0) {
+                startBtn.disabled = false;
+                log.textContent = "Arquivo carregado. Pronto para ofuscar!";
+            } else {
+                startBtn.disabled = true;
+            }
         }
-    }
 
-    async function startObfuscation() {
-        const file = fileInput.files[0];
-        const reader = new FileReader();
+        async function startObfuscation() {
+            const file = fileInput.files[0];
+            const reader = new FileReader();
 
-        reader.onload = function (event) {
-            originalScriptContent = event.target.result;
-            log.textContent = "Iniciando ofuscação...";
-            progressBar.style.display = 'block';
-            progress.style.width = '0%';
+            reader.onload = function (event) {
+                originalScriptContent = event.target.result;
+                log.textContent = "Iniciando ofuscação...";
+                progressBar.style.display = 'block';
+                progress.style.width = '0%';
 
-            // Simulando o processo de ofuscação
+                // Simulando o processo de ofuscação
+                setTimeout(() => {
+                    obfuscateScript(originalScriptContent);
+                }, 1000);
+            };
+
+            reader.readAsText(file);
+        }
+
+        function obfuscateScript(content) {
+            // Simula o processo de ofuscação
+            const lines = content.split('\n');
+            let obfuscated = "@echo off\n\n";
+            let headerVars = ["s", "e", "t"];
+            headerVars.forEach((v, i) => {
+                obfuscated += `set "${headerVars[i]}"=${v}\n`;
+            });
+            obfuscated += "\n";
+
+            let currentLine = 0;
+            lines.forEach((line) => {
+                obfuscated += obfuscateLine(line, currentLine);
+                currentLine++;
+            });
+
+            obfuscatedScriptContent = obfuscated;
+            updateProgress(100);
+            log.textContent = "Ofuscação concluída. Escolha um nome para o arquivo.";
+            fileNameInput.value = `${fileInput.files[0].name}_ofuscado.bat`;
+            downloadBtn.disabled = false;
+        }
+
+        function obfuscateLine(line, lineNumber) {
+            const randomVar = (length = 8) => {
+                const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+                let result = '';
+                for (let i = 0; i < length; i++) {
+                    result += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                return result;
+            };
+
+            const definitions = [];
+            const execution = [];
+            const generatedVars = new Set();
+
+            for (let i = 0; i < line.length; i++) {
+                let varName = randomVar();
+                while (generatedVars.has(varName)) {
+                    varName = randomVar();
+                }
+                generatedVars.add(varName);
+                definitions.push(`%s%%e%%t% "${varName}=${line[i]}"`);
+                execution.push(`%${varName}%`);
+            }
+
+            return definitions.join('\n') + '\n' + execution.join('') + '\n';
+        }
+
+        function updateProgress(percentage) {
+            progress.style.width = `${percentage}%`;
+        }
+
+        function downloadFile() {
+            const filename = fileNameInput.value || 'script_ofuscado.bat';
+            const blob = new Blob([obfuscatedScriptContent], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
+        }
+
+        // Função para fechar o popup após 6 segundos
+        window.onload = function() {
+            const popup = document.querySelector('.popup');
+            const countdownBar = document.querySelector('.countdown-bar div');
+            
+            // Countdown para 6 segundos
             setTimeout(() => {
-                obfuscateScript(originalScriptContent);
-            }, 1000);
+                popup.style.display = 'none'; // Esconde o popup após 6 segundos
+            }, 6000);
+
+            // Anima a barra de countdown (de 100% para 0%)
+            countdownBar.style.transition = 'width 6s linear';
+            countdownBar.style.width = '0%';
         };
-
-        reader.readAsText(file);
-    }
-
-    function obfuscateScript(content) {
-        // Simula o processo de ofuscação
-        const lines = content.split('\n');
-        let obfuscated = "@echo off\n\n";
-        let headerVars = ["s", "e", "t"];
-        headerVars.forEach((v, i) => {
-            obfuscated += `set "${headerVars[i]}"=${v}\n`;
-        });
-        obfuscated += "\n";
-
-        let currentLine = 0;
-        lines.forEach((line) => {
-            obfuscated += obfuscateLine(line, currentLine);
-            currentLine++;
-        });
-
-        obfuscatedScriptContent = obfuscated;
-        updateProgress(100);
-        log.textContent = "Ofuscação concluída. Escolha um nome para o arquivo.";
-        fileNameInput.value = `${fileInput.files[0].name}_ofuscado.bat`;
-        downloadBtn.disabled = false;
-    }
-
-    function obfuscateLine(line, lineNumber) {
-        const randomVar = (length = 8) => {
-            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-            let result = '';
-            for (let i = 0; i < length; i++) {
-                result += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return result;
-        };
-
-        const definitions = [];
-        const execution = [];
-        const generatedVars = new Set();
-
-        for (let i = 0; i < line.length; i++) {
-            let varName = randomVar();
-            while (generatedVars.has(varName)) {
-                varName = randomVar();
-            }
-            generatedVars.add(varName);
-            definitions.push(`%s%%e%%t% "${varName}=${line[i]}"`);
-            execution.push(`%${varName}%`);
-        }
-
-        return definitions.join('\n') + '\n' + execution.join('') + '\n';
-    }
-
-    function updateProgress(percentage) {
-        progress.style.width = `${percentage}%`;
-    }
-
-    function downloadFile() {
-        const filename = fileNameInput.value || 'script_ofuscado.bat';
-        const blob = new Blob([obfuscatedScriptContent], { type: 'text/plain' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = filename;
-        link.click();
-    }
-</script>
-
+    </script>
 </body>
 </html>
